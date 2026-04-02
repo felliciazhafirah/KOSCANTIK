@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { CreateKosDto } from './dto/create-kos.dto'
+import { UpdateKosDto } from './dto/update-ko.dto'
 
 @Injectable()
 export class KosService {
@@ -31,12 +32,18 @@ create(userId: number, dto: CreateKosDto) {
     })
   }
 
-  update(id: number, dto: any) {
-    return this.prisma.kos.update({
-      where: { id },
-      data: dto,
-    })
-  }
+update(id: number, dto: UpdateKosDto) {
+  return this.prisma.kos.update({
+    where: { id },
+    data: {
+      name: dto.name,
+      address: dto.address,
+      description: dto.description,
+      price_per_month: dto.pricePerMonth, // ✅ mapping
+      gender: dto.gender,
+    },
+  })
+}
 
   remove(id: number) {
     return this.prisma.kos.delete({

@@ -1,46 +1,26 @@
-import { Injectable } from '@nestjs/common'
-import { PrismaService } from '../prisma/prisma.service'
-import { CreateBookDto } from './dto/create-book.dto'
+import { Injectable } from '@nestjs/common';
+import { CreateBookDto } from './dto/create-book.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
-export class BooksService {
-  constructor(private prisma: PrismaService) {}
-
-  async create(dto: CreateBookDto) {
-    const kos = await this.prisma.kos.findUnique({
-      where: { id: dto.kosId },
-    })
-
-    if (!kos) throw new Error('Kos tidak ditemukan')
-
-    return this.prisma.book.create({
-      data: {
-        ...dto,
-        startDate: new Date(dto.startDate),
-        endDate: new Date(dto.endDate),
-        totalPrice: kos.pricePerMonth,
-      },
-    })
+export class BookService {
+  create(createBookDto: CreateBookDto) {
+    return 'This action adds a new book';
   }
 
-  updateStatus(id: number, status: 'accepted' | 'rejected') {
-    return this.prisma.book.update({
-      where: { id },
-      data: { status },
-    })
+  findAll() {
+    return `This action returns all book`;
   }
 
-  history(ownerId: number) {
-    return this.prisma.book.findMany({
-      where: {
-        kos: {
-          userId: ownerId,
-        },
-      },
-      include: {
-        kos: true,
-        user: true,
-      },
-    })
+  findOne(id: number) {
+    return `This action returns a #${id} book`;
+  }
+
+  update(id: number, updateBookDto: UpdateBookDto) {
+    return `This action updates a #${id} book`;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} book`;
   }
 }

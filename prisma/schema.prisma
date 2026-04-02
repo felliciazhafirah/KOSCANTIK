@@ -1,14 +1,10 @@
 generator client {
   provider = "prisma-client-js"
 }
-
 datasource db {
   provider = "mysql" // ganti kalau pakai mysql
   url      = env("DATABASE_URL")
 }
-
-
-
 
 model User {
   id       Int      @id @default(autoincrement())
@@ -31,7 +27,6 @@ model Kos {
   price_per_month Int
   gender         Gender
   description     String
-
   owner      User         @relation("OwnerKos", fields: [user_id], references: [id])
   images     KosImage[]
   facilities KosFacility[]
