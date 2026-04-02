@@ -1,12 +1,12 @@
 import {
-  Body,
   Controller,
   Get,
-  Param,
   Post,
-  Query,
   Delete,
   Patch,
+  Param,
+  Body,
+  Query,
 } from '@nestjs/common'
 import { KosService } from './kos.service'
 import { CreateKosDto } from './dto/create-kos.dto'

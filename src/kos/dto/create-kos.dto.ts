@@ -1,4 +1,5 @@
 import { IsEnum, IsNumber, IsString } from 'class-validator'
+import { Type } from 'class-transformer'
 
 export enum Gender {
   male = 'male',
@@ -16,6 +17,7 @@ export class CreateKosDto {
   @IsString()
   description: string
 
+  @Type(() => Number)
   @IsNumber()
   pricePerMonth: number
 
