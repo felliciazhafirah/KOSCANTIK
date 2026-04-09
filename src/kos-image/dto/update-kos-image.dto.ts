@@ -1,4 +1,13 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateKosImageDto } from './create-kos-image.dto';
+import { IsNumber, IsOptional, IsString } from 'class-validator'
+import { Type } from 'class-transformer'
 
-export class UpdateKosImageDto extends PartialType(CreateKosImageDto) {}
+export class UpdateKosImageDto {
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  kosId?: number
+
+  @IsOptional()
+  @IsString()
+  file?: string
+}

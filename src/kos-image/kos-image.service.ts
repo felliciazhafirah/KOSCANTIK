@@ -1,26 +1,44 @@
-import { Injectable } from '@nestjs/common';
-import { CreateKosImageDto } from './dto/create-kos-image.dto';
-import { UpdateKosImageDto } from './dto/update-kos-image.dto';
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from '../prisma/prisma.service'
+import { CreateKosImageDto } from './dto/create-kos-image.dto'
+import { UpdateKosImageDto } from './dto/update-kos-image.dto'
 
 @Injectable()
 export class KosImageService {
-  create(createKosImageDto: CreateKosImageDto) {
-    return 'This action adds a new kosImage';
+  constructor(private prisma: PrismaService) {}
+
+  create(dto: CreateKosImageDto) {
+    return this.prisma.kosImage.create({
+      data: {
+        kos_id: dto.kosId, // mapping
+        file: dto.file,
+      },
+    })
   }
 
   findAll() {
-    return `This action returns all kosImage`;
+    return this.prisma.kosImage.findMany({
+      include: {
+        kos: true,
+      },
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} kosImage`;
-  }
+  update(id: number, dto: UpdateKosImageDto) {
+    const data: any = {
+      ...(dto.kosId && { kos_id: dto.kosId }),
+      ...(dto.file && { file: dto.file }),
+    }
 
-  update(id: number, updateKosImageDto: UpdateKosImageDto) {
-    return `This action updates a #${id} kosImage`;
+    return this.prisma.kosImage.update({
+      where: { id },
+      data,
+    })
   }
 
   remove(id: number) {
-    return `This action removes a #${id} kosImage`;
+    return this.prisma.kosImage.delete({
+      where: { id },
+    })
   }
 }
