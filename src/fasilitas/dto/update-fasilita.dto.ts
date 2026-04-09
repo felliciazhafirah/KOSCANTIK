@@ -1,4 +1,13 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateFasilitaDto } from './create-fasilita.dto';
+import { IsNumber, IsOptional, IsString } from 'class-validator'
+import { Type } from 'class-transformer'
 
-export class UpdateFasilitaDto extends PartialType(CreateFasilitaDto) {}
+export class UpdateFasilitasDto {
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  kosId?: number
+
+  @IsOptional()
+  @IsString()
+  facility?: string
+}
