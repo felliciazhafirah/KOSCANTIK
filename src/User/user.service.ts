@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma/prisma.service'
 import { CreateUserDto } from './dto/create-user.dto'
+import { UpdateUserDto } from './dto/update-user.dto'
 import * as bcrypt from 'bcrypt'
 
 @Injectable()
@@ -18,6 +19,25 @@ export class UserService {
       phone: dto.phone,
       role: dto.role,
     },
+  })
+}
+
+async update(id: number, dto: UpdateUserDto) {
+  const data: any = {
+    ...(dto.name && { name: dto.name }),
+    ...(dto.email && { email: dto.email }),
+    ...(dto.phone && { phone: dto.phone }),
+    ...(dto.role && { role: dto.role }),
+  }
+
+  // 🔐 kalau password diisi → hash
+  if (dto.password) {
+    data.password = await bcrypt.hash(dto.password, 10)
+  }
+
+  return this.prisma.user.update({
+    where: { id },
+    data,
   })
 }
 
@@ -41,9 +61,14 @@ export class UserService {
     })
   }
 
-  async remove(id: number) {
-    return this.prisma.user.delete({
-      where: { id },
-    })
+async remove(id: number) {
+  await this.prisma.user.delete({
+    where: { id },
+  })
+
+  return {
+    message: 'User berhasil dihapus',
   }
 }
+}
+
