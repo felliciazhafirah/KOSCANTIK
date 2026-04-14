@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
 import { KosImageService } from './kos-image.service'
 import { KosImageController } from './kos-image.controller'
-import { PrismaService } from '../prisma/prisma.service'
+import { PrismaModule } from '../prisma/prisma.module'
 
 @Module({
+  imports: [PrismaModule],
   controllers: [KosImageController],
-  providers: [KosImageService, PrismaService],
+  providers: [KosImageService],
 })
 export class KosImageModule {}

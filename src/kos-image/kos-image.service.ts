@@ -7,14 +7,6 @@ import { UpdateKosImageDto } from './dto/update-kos-image.dto'
 export class KosImageService {
   constructor(private prisma: PrismaService) {}
 
-  create(dto: CreateKosImageDto) {
-    return this.prisma.kosImage.create({
-      data: {
-        kos_id: dto.kosId, // mapping
-        file: dto.file,
-      },
-    })
-  }
 
   findAll() {
     return this.prisma.kosImage.findMany({
@@ -25,16 +17,24 @@ export class KosImageService {
   }
 
   update(id: number, dto: UpdateKosImageDto) {
-    const data: any = {
-      ...(dto.kosId && { kos_id: dto.kosId }),
-      ...(dto.file && { file: dto.file }),
-    }
-
     return this.prisma.kosImage.update({
       where: { id },
-      data,
+      data: {
+        kos_id: dto.kosId,
+        file: dto.file,
+      },
     })
   }
+
+  create(kosId: number, filename: string) {
+  return this.prisma.kosImage.create({
+    data: {
+      kos_id: kosId,
+      file: filename, // ✅ ini yang benar
+    },
+  })
+}
+
 
   remove(id: number) {
     return this.prisma.kosImage.delete({

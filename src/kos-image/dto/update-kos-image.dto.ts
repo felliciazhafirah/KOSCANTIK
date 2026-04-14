@@ -1,13 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator'
-import { Type } from 'class-transformer'
+import { PartialType } from '@nestjs/mapped-types'
+import { CreateKosImageDto } from './create-kos-image.dto'
 
-export class UpdateKosImageDto {
-  @IsOptional()
-  @Type(() => Number)
-  @IsNumber()
-  kosId?: number
-
-  @IsOptional()
-  @IsString()
-  file?: string
-}
+export class UpdateKosImageDto extends PartialType(CreateKosImageDto) {}

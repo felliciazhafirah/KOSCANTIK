@@ -36,9 +36,13 @@ export class FasilitasService {
     })
   }
 
-  remove(id: number) {
-    return this.prisma.kosFacility.delete({
+  async remove(id: number) {
+    await this.prisma.kosFacility.delete({
       where: { id },
     })
+
+    return {
+      message : 'Fasilitas berhasil dihapus',
+    }
   }
 }

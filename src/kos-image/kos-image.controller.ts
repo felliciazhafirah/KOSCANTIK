@@ -1,40 +1,28 @@
 import {
-  Body,
   Controller,
-  Get,
   Post,
-  Patch,
-  Delete,
-  Param,
+  UseInterceptors,
+  UploadedFile,
+  Body,
 } from '@nestjs/common'
-import { KosImageService } from './kos-image.service'
-import { CreateKosImageDto } from './dto/create-kos-image.dto'
-import { UpdateKosImageDto } from './dto/update-kos-image.dto'
+import { FileInterceptor } from '@nestjs/platform-express'
+import { KosImageService } from './kos-image.service' 
+import type { Express } from 'express'     
 
 @Controller('kos-image')
 export class KosImageController {
-  constructor(private readonly service: KosImageService) {}
+  constructor(private readonly kosImageService: KosImageService) {}
 
   @Post()
-  create(@Body() dto: CreateKosImageDto) {
-    return this.service.create(dto)
-  }
+  @UseInterceptors(FileInterceptor('file'))
+  upload(
+  @UploadedFile() file: Express.Multer.File,
+  @Body('kosId') kosId: string,
+) {
+  return this.kosImageService.create(
+    Number(kosId),
+    file.filename, // ✅ ini yang dikirim
+  )
+}
 
-  @Get()
-  findAll() {
-    return this.service.findAll()
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() dto: UpdateKosImageDto,
-  ) {
-    return this.service.update(Number(id), dto)
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.service.remove(Number(id))
-  }
 }

@@ -4,8 +4,11 @@ import { UserModule } from './src/user/user.module';
 import { BookModule } from './src/book/book.module';
 import { KosImageModule } from 'src/kos-image/kos-image.module';
 import { FasilitasModule } from './src/fasilitas/fasilitas.module';
+import { ReviewModule } from './src/review/review.module'
+
+
 
 @Module({
-  imports: [KosModule, FasilitasModule, UserModule, BookModule, KosImageModule],
+  imports: [KosModule, FasilitasModule, ReviewModule, UserModule, BookModule, KosImageModule],
 })
 export class AppModule {}

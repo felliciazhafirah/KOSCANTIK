@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
-import { CreateBookDto } from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from '../prisma/prisma.service'
+import { CreateBookDto } from './dto/create-book.dto'
+import { UpdateBookDto } from './dto/update-book.dto'
 
 @Injectable()
 export class BookService {
-  create(createBookDto: CreateBookDto) {
-    return 'This action adds a new book';
+  constructor(private prisma: PrismaService) {}
+
+  create(dto: CreateBookDto) {
+    return this.prisma.book.create({
+      data: {
+        kos_id: dto.kosId,
+        user_id: dto.userId,
+        start_date: new Date(dto.startDate),
+        end_date: new Date(dto.endDate),
+        status: dto.status,
+      },
+    })
   }
 
   findAll() {
-    return `This action returns all book`;
+    return this.prisma.book.findMany({
+      include: {
+        kos: true,
+        user: true,
+      },
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
-  }
-
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  update(id: number, dto: UpdateBookDto) {
+    return this.prisma.book.update({
+      where: { id },
+      data: {
+        kos_id: dto.kosId,
+        user_id: dto.userId,
+        start_date: dto.startDate ? new Date(dto.startDate) : undefined,
+        end_date: dto.endDate ? new Date(dto.endDate) : undefined,
+        status: dto.status,
+      },
+    })
   }
 
   remove(id: number) {
-    return `This action removes a #${id} book`;
+    return this.prisma.book.delete({
+      where: { id },
+    })
   }
 }
